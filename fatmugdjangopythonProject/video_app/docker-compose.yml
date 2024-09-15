@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: fatmug_task_django
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data  # Correct volume usage
+
+  web:
+    build: ..
+    command: gunicorn video_app.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ..:/app  # Use one directory above
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DJANGO_ALLOWED_HOSTS=localhost
+      - DATABASE_NAME=fatmug_task_django
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=password
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+# Define volumes
+volumes:
+  pgdata:

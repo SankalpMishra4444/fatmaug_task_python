@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Search</title>
+</head>
+<body>
+    <h1>Search Video Subtitles</h1>
+    <form method="GET" action="{% url 'search' %}">
+        <label for="phrase">Search Phrase:</label>
+        <input type="text" name="phrase" id="phrase">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results %}
+        <h2>Search Results</h2>
+        <ul>
+            {% for result in results %}
+                <li>
+                    <a href="{% url 'play_video' result.video.id %}?t={{ result.timestamp }}">{{ result.text }} at {{ result.timestamp }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
+
+
